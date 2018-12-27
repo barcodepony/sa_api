@@ -1,0 +1,10 @@
+GBL_HOST = '140.82.37.52'
+GBL_PORT = 3306
+GBL_DB = "SA"
+GBL_USER = "sa"
+GBL_PASSWORD = "sa_passwd"
+
+
+SELECT_FAVS = "SELECT * FROM fav;"
+SELECT_SHOPS = "SELECT * FROM shops;"
+SELECT_POIS = "SELECT * FROM poi;"

@@ -1,0 +1,117 @@
+swagger: "2.0"
+info:
+  description: This is the swagger_ui for the Task 4
+  version: "1.0.1"
+  title: SA TASK_04 API - GROUP_10
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/api"
+
+# Paths supported by the server application
+paths:
+  # /shops:
+  #   get:
+  #     operationId: calls.shops.read_all
+  #     tags:
+  #       - Shops
+  #     summary: The shops data structure supported by the server application
+  #     description: "Read the list of Shops"
+  #     responses:
+  #       200:
+  #         description: Successful list shops operations
+  #         schema:
+  #           type: array
+  #           items:
+  #             properties:
+  #               s_id:
+  #                 type: integer
+  #               s_lon:
+  #                 type: float
+  #               s_lat:
+  #                 type: float
+  #               s_name:
+  #                 type: string
+  #               s_homepage:
+  #                 type: string
+  #               s_category:
+  #                 type: string
+  #               s_amenity:
+  #                 type: string
+
+  /favs:
+    get:
+      operationId: calls.favs.read_all
+      tags:
+        - Favs
+      summary: The Favs data structure supported by the server application
+      description: Read the list of Favourites
+      responses:
+        200:
+          description: Successful list favs operations
+          schema:
+            type: array
+            items:
+              properties:
+                f_id:
+                  type: integer
+                f_category:
+                  type: string
+                f_name:
+                  type: string
+                f_poi:
+                  type: string
+  /pois:
+    get:
+      operationId: calls.pois.read_all
+      tags:
+        - Pois
+      summary: The Pois data structure supported by the server application
+      description: Read the list of Pois
+      responses:
+        200:
+          description: Successful list pois operations
+          schema:
+            type: array
+            items:
+              properties:
+                p_id:
+                  type: integer
+                p_lat:
+                  type: number
+                p_lon:
+                  type: number
+                p_name:
+                  type: string
+                p_amenity:
+                  type: string
+  /shops:
+    get:
+      operationId: calls.shops.read_all
+      tags:
+        - Shops
+      summary: The Shops data structure supported by the server application
+      description: Read the list of Shops
+      responses:
+        200:
+          description: Successful list shops operations
+          schema:
+            type: array
+            items:
+              properties:
+                s_id:
+                  type: integer
+                s_lon:
+                  type: number
+                s_lat:
+                  type: number
+                s_name:
+                  type: string
+                s_homepage:
+                  type: string
+                s_category:
+                  type: string
+                s_amenity:
+                  type: string
