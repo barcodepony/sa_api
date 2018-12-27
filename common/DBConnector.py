@@ -12,6 +12,7 @@ class DBC(object):
         self.__user = user
         self.__password = password
         self.connection = None
+
     def connect(self):
         try:
             self.connection = mysql.connector.connect(host=self.host,
