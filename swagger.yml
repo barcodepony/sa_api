@@ -12,35 +12,6 @@ basePath: "/api"
 
 # Paths supported by the server application
 paths:
-  # /shops:
-  #   get:
-  #     operationId: calls.shops.read_all
-  #     tags:
-  #       - Shops
-  #     summary: The shops data structure supported by the server application
-  #     description: "Read the list of Shops"
-  #     responses:
-  #       200:
-  #         description: Successful list shops operations
-  #         schema:
-  #           type: array
-  #           items:
-  #             properties:
-  #               s_id:
-  #                 type: integer
-  #               s_lon:
-  #                 type: float
-  #               s_lat:
-  #                 type: float
-  #               s_name:
-  #                 type: string
-  #               s_homepage:
-  #                 type: string
-  #               s_category:
-  #                 type: string
-  #               s_amenity:
-  #                 type: string
-
   /favs:
     get:
       operationId: calls.favs.read_all
