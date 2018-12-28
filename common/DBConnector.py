@@ -35,7 +35,7 @@ class DBC(object):
             self.connection.close()
             print("Disconnecting Database Connector")
 
-    def __execute(self, SQL):
+    def __query_sql(self, SQL):
         if self.connection is None:
             raise ConnectionError("Connection is not set.")
         if not self.connection.is_connected():
@@ -47,8 +47,19 @@ class DBC(object):
         rec = cursor.fetchall()
         return rec
 
+    def __execute_sql(self, SQL):
+        if self.connection is None:
+            raise ConnectionError("Connection is not set.")
+        if not self.connection.is_connected():
+            raise ConnectionError("You are not connected to the DB!")
+        cursor = self.connection.cursor()
+        print("EXECUTING: %s" % SQL)
+        cursor.execute(SQL)
+        self.connection.commit()
+
+
     def get_all_shops(self):
-        records = self.__execute(SELECT_SHOPS)
+        records = self.__query_sql(SELECT_SHOPS)
 
         shops = []
         for shop in records:
@@ -65,10 +76,25 @@ class DBC(object):
         shops.sort(key=itemgetter("s_id"))
         return shops
 
-    def get_all_favs(self):
-        records = self.__execute(SELECT_FAVS)
-        # TODO: filter records
+    def get_one_shop(self, s_id: int):
+        record = self.__query_sql(SELECT_ONE_SHOP % s_id)
+        if len(record) == 0:
+            return {}
+        else:
+            record = record[0]
 
+        s = {}
+        s["s_id"] = record[0]
+        s["s_lon"] = record[1]
+        s["s_lat"] = record[2]
+        s["s_name"] = record[3]
+        s["s_homepage"] = record[4]
+        s["s_category"] = record[5]
+        s["s_amenity"] = record[6]
+        return s
+
+    def get_all_favs(self):
+        records = self.__query_sql(SELECT_FAVS)
         favs = []
         for fav in records:
 
@@ -77,13 +103,56 @@ class DBC(object):
             f["f_category"] = fav[1]
             f["f_name"] = fav[2]
             f["f_poi"] = fav[3]
+            f["f_label"] = fav[4]
             favs.append(f)
 
         favs.sort(key=itemgetter("f_id"))
         return favs
 
+    def get_one_fav(self, f_id: int):
+        record = self.__query_sql(SELECT_ONE_FAV % f_id)
+        if len(record) == 0:
+            return {}
+        else:
+            record = record[0]
+        fav = {}
+        fav["f_id"] = record[0]
+        fav["f_category"] = record[1]
+        fav["f_name"] = record[2]
+        fav["f_poi"] = record[3]
+        fav["f_label"] = record[4]
+        fav["f_label"] = record[5]
+        return fav
+
+    def update_one_fav(self, favourite: dict):
+
+        SQL = UPDATE_FAV_BY_ID % (favourite["category"],
+                                  favourite["name"],
+                                  favourite["poi"],
+                                  favourite["label"],
+                                  favourite["id"])
+        self.__execute_sql(SQL)
+
+    def update_one_poi(self, poi: dict):
+        SQL = UPDATE_POI_BY_ID % (poi["lon"],
+                                  poi["lat"],
+                                  poi["name"],
+                                  poi["amenity"],
+                                  poi["id"])
+
+        self.__execute_sql(SQL)
+
+    def update_one_shop(self, shop: dict):
+        SQL = UPDATE_SHOP_BY_ID % (shop["lon"],
+                                   shop["lat"],
+                                   shop["name"],
+                                   shop["homepage"],
+                                   shop["categorie"],
+                                   shop["amenity"],
+                                   shop["id"])
+
     def get_all_pois(self):
-        records = self.__execute(SELECT_POIS)
+        records = self.__query_sql(SELECT_POIS)
         # TODO: filter records
 
         pois = []
@@ -98,6 +167,21 @@ class DBC(object):
 
         pois.sort(key=itemgetter("p_id"))
         return pois
+
+    def get_one_poi(self, p_id: int):
+        record = self.__query_sql(SELECT_ONE_POI % p_id)
+        if len(record) == 0:
+            return {}
+        else:
+            record = record[0]
+
+        p = {}
+        p["p_id"] = record[0]
+        p["p_lon"] = record[1]
+        p["p_lat"] = record[2]
+        p["p_name"] = record[3]
+        p["p_amenity"] = record[4]
+        return p
 
 
 

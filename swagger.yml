@@ -34,6 +34,71 @@ paths:
                   type: string
                 f_poi:
                   type: string
+                f_label:
+                  type: string
+  /favs/{f_id}:
+    get:
+      operationId: calls.favs.read_one
+      tags:
+        - Favs
+      summary: Reads one Fav by ID
+      description: Read one Favourite by ID
+      parameters:
+        - name: f_id
+          in: path
+          description: ID of the fav to get from the list
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successful read the fav from list operation
+          schema:
+            properties:
+              f_id:
+                type: integer
+              f_category:
+                type: string
+              f_name:
+                type: string
+              f_poi:
+                type: string
+              f_label:
+                type: string
+
+    put:
+      operationId: calls.favs.update_one
+      tags:
+        - Favs
+      summary: Updates one Fav by ID
+      description: Updates one Fav by ID
+      parameters:
+        - name: f_id
+          in: path
+          description: The ID of the Fav to update
+          type: string
+          required: True
+        - name: favourite
+          in: body
+          required: True
+          schema:
+            type: object
+            properties:
+              #f_id:
+              #  type: integer
+              f_category:
+                type: string
+              f_name:
+                type: string
+              f_poi:
+                type: string
+              f_label:
+                type: string
+      responses:
+        200:
+          description: Successfully added Favourite-Update with ID to the Queue
+
+
+
   /pois:
     get:
       operationId: calls.pois.read_all
@@ -50,14 +115,77 @@ paths:
               properties:
                 p_id:
                   type: integer
-                p_lat:
-                  type: number
                 p_lon:
+                  type: number
+                p_lat:
                   type: number
                 p_name:
                   type: string
                 p_amenity:
                   type: string
+
+  /pois/{p_id}:
+    get:
+      operationId: calls.pois.read_one
+      tags:
+        - Pois
+      summary: The Poi data structure supported by the server application
+      description: Read one PoI by ID
+      parameters:
+        - name: p_id
+          in: path
+          description: ID of the poi to get from the list
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successful list pois operations
+          schema:
+            properties:
+              p_id:
+                type: integer
+              p_lon:
+                type: number
+              p_lat:
+                type: number
+              p_name:
+                type: string
+              p_amenity:
+                type: string
+
+    put:
+      operationId: calls.pois.update_one
+      tags:
+        - Pois
+      summary: Updates one PoI by ID
+      description: Updates one PoI by ID
+      parameters:
+        - name: p_id
+          in: path
+          description: The ID of the PoI to update
+          type: string
+          required: True
+        - name: poi
+          in: body
+          required: True
+          schema:
+            type: object
+            properties:
+              #f_id:
+              #  type: integer
+              p_lon:
+                type: number
+              p_lat:
+                type: number
+              p_name:
+                type: string
+              p_amenity:
+                type: string
+      responses:
+        200:
+          description: Successfully added PoI-Update with ID to the Queue
+
+
   /shops:
     get:
       operationId: calls.shops.read_all
@@ -86,3 +214,69 @@ paths:
                   type: string
                 s_amenity:
                   type: string
+
+  /shops/{s_id}:
+    get:
+      operationId: calls.shops.read_one
+      tags:
+        - Shops
+      summary: The Shop data structure supported by the server application
+      description: Read one Shop by ID
+      parameters:
+        - name: s_id
+          in: path
+          description: ID of the shop to get from the list
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successful list Shop operations
+          schema:
+            properties:
+              s_id:
+                type: integer
+              s_lon:
+                type: number
+              s_lat:
+                type: number
+              s_name:
+                type: string
+              s_homepage:
+                type: string
+              s_category:
+                type: string
+              s_amenity:
+                type: string
+    put:
+      operationId: calls.shops.update_one
+      tags:
+        - Shops
+      summary: Updates one Shops by ID
+      description: Updates one Shops by ID
+      parameters:
+        - name: s_id
+          in: path
+          description: The ID of the Shops to update
+          type: string
+          required: True
+        - name: shop
+          in: body
+          required: True
+          schema:
+            type: object
+            properties:
+              s_lon:
+                type: number
+              s_lat:
+                type: number
+              p_name:
+                type: string
+              s_homepage:
+                type: string
+              s_category:
+                type: string
+              s_amenity:
+                type: string
+      responses:
+        200:
+          description: Successfully added s_amenity-Update with ID to the Queue
