@@ -157,6 +157,7 @@ class DBC(object):
                                 fav["name"],
                                 fav["label"])
 
+
         self.__execute_sql(sql)
 
     def insert_one_shop(self, shop):
