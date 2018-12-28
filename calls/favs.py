@@ -59,3 +59,26 @@ def update_one(f_id, favourite):
         print("ERROR: %s" % e)
     finally:
         dbc.close_connection()
+
+def create_one(favourite):
+    keys = ["f_category", "f_name", "f_poi", "f_label"]
+    for key in favourite:
+        if key in keys:
+            keys.remove(key)
+    if len(keys) > 0:
+        print("ERROR: Not all keys within the request body (%s) .. aborting" % keys)
+        return
+
+    dbc = DBC()
+    fav = {}
+    fav["category"] = favourite["f_category"]
+    fav["name"] = favourite["f_name"]
+    fav["poi"] = favourite["f_poi"]
+    fav["label"] = favourite["f_label"]
+    try:
+        dbc.connect()
+        dbc.insert_one_fav(fav)
+    except Exception as e:
+        print("ERROR: %s" % e)
+    finally:
+        dbc.close_connection()

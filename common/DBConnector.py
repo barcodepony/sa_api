@@ -2,7 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 from common.SQL_CONSTANTS import *
 from operator import itemgetter
-
+import collections
 class DBC(object):
     def __init__(self, host:str=GBL_HOST, port:int=GBL_PORT, db:str=GBL_DB, user:str=GBL_USER, password:str=GBL_PASSWORD):
         self.host = host
@@ -58,7 +58,7 @@ class DBC(object):
         self.connection.commit()
 
     def get_all_shops(self):
-        records = self.__query_sql(SELECT_SHOPS)
+        records = self.__query_sql(SELECT_ALL_SHOPS)
 
         shops = []
         for shop in records:
@@ -93,7 +93,7 @@ class DBC(object):
         return s
 
     def get_all_favs(self):
-        records = self.__query_sql(SELECT_FAVS)
+        records = self.__query_sql(SELECT_ALL_FAVS)
         favs = []
         for fav in records:
 
@@ -151,6 +151,41 @@ class DBC(object):
                                    shop["id"])
         self.__execute_sql(sql)
 
+    def insert_one_fav(self, fav):
+        sql = INSERT_ONE_FAV % (fav["category"],
+                                fav["poi"],
+                                fav["name"],
+                                fav["label"])
+
+        self.__execute_sql(sql)
+
+    def insert_one_shop(self, shop):
+        sql = INSERT_ONE_SHOP % (shop["lon"],
+                                 shop["lat"],
+                                 shop["name"],
+                                 shop["homepage"],
+                                 shop["categorie"],
+                                 shop["amenity"])
+
+        self.__execute_sql(sql)
+
+    def get_all_categories(self):
+        sql = SELECT_ALL_CATEGORIES
+        records = self.__query_sql(sql)
+        if len(records) == 0:
+            return {}
+        else:
+            records = [cat[0] for cat in records]
+
+        categories = {}
+        for index, cat in enumerate(records):
+            categories[index] = cat
+
+        sorted_categories = collections.OrderedDict(sorted(categories.items()))
+
+        return sorted_categories
+
+
     def delete_one_fav(self, f_id: int):
         sql = DELETE_FAV_BY_ID % f_id
         self.__execute_sql(sql)
@@ -164,7 +199,7 @@ class DBC(object):
         self.__execute_sql(sql)
 
     def get_all_pois(self):
-        records = self.__query_sql(SELECT_POIS)
+        records = self.__query_sql(SELECT_ALL_POIS)
         # TODO: filter records
 
         pois = []
@@ -201,6 +236,6 @@ class DBC(object):
 if __name__ == "__main__":
     dbc = DBC()
     dbc.connect()
-    dbc.get_all_favs()
+    dbc.get_all_categories()
     # rec = dbc.execute("select * from fav;")
     dbc.close_connection()

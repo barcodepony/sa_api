@@ -47,7 +47,6 @@ def update_one(p_id, poi):
 
     dbc = DBC()
     p = {}
-    p["id"] = p_id
     p["lon"] = poi["p_lon"]
     p["lat"] = poi["p_lat"]
     p["name"] = poi["p_name"]
@@ -59,3 +58,6 @@ def update_one(p_id, poi):
         print("ERROR: %s" % e)
     finally:
         dbc.close_connection()
+
+def create_one(poi):
+    return

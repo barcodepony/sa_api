@@ -23,19 +23,44 @@ paths:
         200:
           description: Successful list favs operations
           schema:
-            type: array
-            items:
-              properties:
-                f_id:
-                  type: integer
-                f_category:
-                  type: string
-                f_name:
-                  type: string
-                f_poi:
-                  type: string
-                f_label:
-                  type: string
+            type: object
+            properties:
+              f_id:
+                type: integer
+              f_category:
+                type: string
+              f_name:
+                type: string
+              f_poi:
+                type: string
+              f_label:
+                type: string
+    post:
+      operationId: calls.favs.create_one
+      tags:
+        - Favs
+      summary: The Favs data structure supported by the server application
+      description: Create a Favourite
+      parameters:
+        - name: favourite
+          in: body
+          required: True
+          schema:
+            type: object
+            properties:
+              f_category:
+                type: string
+              f_name:
+                type: string
+              f_poi:
+                type: string
+              f_label:
+                type: string
+      responses:
+        200:
+          description: Successful added Favourite-Creation to Queue
+
+
   /favs/{f_id}:
     get:
       operationId: calls.favs.read_one
@@ -113,7 +138,6 @@ paths:
           description: Successfully added Favourite-Update with ID to the Queue
 
 
-
   /pois:
     get:
       operationId: calls.pois.read_all
@@ -138,6 +162,33 @@ paths:
                   type: string
                 p_amenity:
                   type: string
+
+    post:
+      operationId: calls.pois.create_one
+      tags:
+        - Pois
+      summary: The PoI data structure supported by the server application
+      description: Create a PoI
+      parameters:
+        - name: poi
+          in: body
+          required: True
+          schema:
+            type: object
+            properties:
+              p_id:
+                type: integer
+              p_lon:
+                type: number
+              p_lat:
+                type: number
+              p_name:
+                type: string
+              p_amenity:
+                type: string
+      responses:
+        200:
+          description: Successful added PoI-Creation to Queue
 
   /pois/{p_id}:
     get:
@@ -215,7 +266,6 @@ paths:
         200:
           description: Successfully added PoI-Update with ID to the Queue
 
-
   /shops:
     get:
       operationId: calls.shops.read_all
@@ -244,6 +294,53 @@ paths:
                   type: string
                 s_amenity:
                   type: string
+
+    post:
+      operationId: calls.shops.create_one
+      tags:
+        - Shops
+      summary: The Shops data structure supported by the server application
+      description: Create a Shop
+      parameters:
+        - name: shop
+          in: body
+          required: True
+          schema:
+            type: object
+            properties:
+              s_id:
+                type: integer
+              s_lon:
+                type: number
+              s_lat:
+                type: number
+              s_name:
+                type: string
+              s_homepage:
+                type: string
+              s_category:
+                type: string
+              s_amenity:
+                type: string
+      responses:
+        200:
+          description: Successful added Shop-Creation to Queue
+  /shops/category:
+    get:
+      operationId: calls.shops.get_categories
+      tags:
+        - Category
+      summary: Lists all Categories supported by the server application
+      description: Lists all Categories supported by the server application
+      responses:
+        200:
+          description: Lists all Categories supported by the server application
+          schema:
+            type: object
+            additionalProperties:
+              type: integer
+
+
 
   /shops/{s_id}:
     get:
@@ -315,7 +412,7 @@ paths:
                 type: number
               s_lat:
                 type: number
-              p_name:
+              s_name:
                 type: string
               s_homepage:
                 type: string
