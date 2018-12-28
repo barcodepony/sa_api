@@ -25,6 +25,16 @@ def read_one(s_id: int):
         dbc.close_connection()
     return jsonify(shop)
 
+def delete_one(s_id):
+    dbc = DBC()
+    try:
+        dbc.connect()
+        dbc.delete_one_shop(s_id)
+    except Exception as e:
+        print("ERROR: %s" % e)
+    finally:
+        dbc.close_connection()
+
 
 # TODO chgange to shops
 def update_one(s_id, shop):

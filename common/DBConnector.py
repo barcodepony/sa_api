@@ -35,28 +35,27 @@ class DBC(object):
             self.connection.close()
             print("Disconnecting Database Connector")
 
-    def __query_sql(self, SQL):
+    def __query_sql(self, sql):
         if self.connection is None:
             raise ConnectionError("Connection is not set.")
         if not self.connection.is_connected():
             raise ConnectionError("You are not connected to the DB!")
 
         cursor = self.connection.cursor()
-        print("CALLING: %s" % SQL)
-        cursor.execute(SQL)
+        print("CALLING: %s" % sql)
+        cursor.execute(sql)
         rec = cursor.fetchall()
         return rec
 
-    def __execute_sql(self, SQL):
+    def __execute_sql(self, sql):
         if self.connection is None:
             raise ConnectionError("Connection is not set.")
         if not self.connection.is_connected():
             raise ConnectionError("You are not connected to the DB!")
         cursor = self.connection.cursor()
-        print("EXECUTING: %s" % SQL)
-        cursor.execute(SQL)
+        print("EXECUTING: %s" % sql)
+        cursor.execute(sql)
         self.connection.commit()
-
 
     def get_all_shops(self):
         records = self.__query_sql(SELECT_SHOPS)
@@ -126,30 +125,43 @@ class DBC(object):
 
     def update_one_fav(self, favourite: dict):
 
-        SQL = UPDATE_FAV_BY_ID % (favourite["category"],
+        sql = UPDATE_FAV_BY_ID % (favourite["category"],
                                   favourite["name"],
                                   favourite["poi"],
                                   favourite["label"],
                                   favourite["id"])
-        self.__execute_sql(SQL)
+        self.__execute_sql(sql)
 
     def update_one_poi(self, poi: dict):
-        SQL = UPDATE_POI_BY_ID % (poi["lon"],
+        sql = UPDATE_POI_BY_ID % (poi["lon"],
                                   poi["lat"],
                                   poi["name"],
                                   poi["amenity"],
                                   poi["id"])
 
-        self.__execute_sql(SQL)
+        self.__execute_sql(sql)
 
     def update_one_shop(self, shop: dict):
-        SQL = UPDATE_SHOP_BY_ID % (shop["lon"],
+        sql = UPDATE_SHOP_BY_ID % (shop["lon"],
                                    shop["lat"],
                                    shop["name"],
                                    shop["homepage"],
                                    shop["categorie"],
                                    shop["amenity"],
                                    shop["id"])
+        self.__execute_sql(sql)
+
+    def delete_one_fav(self, f_id: int):
+        sql = DELETE_FAV_BY_ID % f_id
+        self.__execute_sql(sql)
+
+    def delete_one_shop(self, s_id: int):
+        sql = DELETE_SHOP_BY_ID % s_id
+        self.__execute_sql(sql)
+
+    def delete_one_poi(self, p_id: int):
+        sql = DELETE_POI_BY_ID % p_id
+        self.__execute_sql(sql)
 
     def get_all_pois(self):
         records = self.__query_sql(SELECT_POIS)

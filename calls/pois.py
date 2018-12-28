@@ -25,6 +25,16 @@ def read_one(p_id: int):
         dbc.close_connection()
     return jsonify(poi)
 
+def delete_one(p_id):
+    dbc = DBC()
+    try:
+        dbc.connect()
+        dbc.delete_one_poi(p_id)
+    except Exception as e:
+        print("ERROR: %s" % e)
+    finally:
+        dbc.close_connection()
+
 
 def update_one(p_id, poi):
     keys = ["p_lon", "p_lat", "p_name", "p_amenity"]

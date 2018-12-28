@@ -25,6 +25,16 @@ def read_one(f_id):
         dbc.close_connection()
     return jsonify(fav)
 
+def delete_one(f_id):
+    dbc = DBC()
+    try:
+        dbc.connect()
+        dbc.delete_one_fav(f_id)
+    except Exception as e:
+        print("ERROR: %s" % e)
+    finally:
+        dbc.close_connection()
+
 
 def update_one(f_id, favourite):
     keys = ["f_category", "f_name", "f_poi", "f_label"]
