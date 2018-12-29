@@ -170,10 +170,10 @@ class DBC(object):
         self.__execute_sql(sql)
 
     def insert_one_poi(self, poi):
-        sql = INSER_ONE_POI % (poi["lon"],
-                               poi["lat"],
-                               poi["name"],
-                               poi["amenity"])
+        sql = INSERT_ONE_POI % (poi["lon"],
+                                poi["lat"],
+                                poi["name"],
+                                poi["amenity"])
 
         self.__execute_sql(sql)
 
