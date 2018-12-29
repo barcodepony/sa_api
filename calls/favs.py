@@ -1,8 +1,10 @@
 from common.DBConnector import DBC
 from flask import jsonify
 
+
 def read_all():
     dbc = DBC()
+    favs = []
     try:
         dbc.connect()
         favs = dbc.get_all_favs()
@@ -24,6 +26,7 @@ def read_one(f_id):
     finally:
         dbc.close_connection()
     return jsonify(fav)
+
 
 def delete_one(f_id):
     dbc = DBC()
@@ -59,6 +62,7 @@ def update_one(f_id, favourite):
         print("ERROR: %s" % e)
     finally:
         dbc.close_connection()
+
 
 def create_one(favourite):
     keys = ["f_category", "f_name", "f_poi", "f_label"]
