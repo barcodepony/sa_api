@@ -47,6 +47,7 @@ def update_one(p_id, poi):
 
     dbc = DBC()
     p = {}
+    p["id"] = p_id
     p["lon"] = poi["p_lon"]
     p["lat"] = poi["p_lat"]
     p["name"] = poi["p_name"]
@@ -59,5 +60,26 @@ def update_one(p_id, poi):
     finally:
         dbc.close_connection()
 
+
 def create_one(poi):
-    return
+    keys = ["p_lon", "p_lat", "p_name", "p_label"]
+    for key in poi:
+        if key in keys:
+            keys.remove(key)
+    if len(keys) > 0:
+        print("ERROR: Not all keys within the request body (%s) .. aborting" % keys)
+        return
+
+    dbc = DBC()
+    p = {}
+    p["lon"] = poi["p_lon"]
+    p["lat"] = poi["p_lat"]
+    p["name"] = poi["p_name"]
+    p["amenity"] = poi["p_amenity"]
+    try:
+        dbc.connect()
+        dbc.insert_one_poi(p)
+    except Exception as e:
+        print("ERROR: %s" % e)
+    finally:
+        dbc.close_connection()

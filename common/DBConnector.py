@@ -157,7 +157,6 @@ class DBC(object):
                                 fav["name"],
                                 fav["label"])
 
-
         self.__execute_sql(sql)
 
     def insert_one_shop(self, shop):
@@ -167,6 +166,14 @@ class DBC(object):
                                  shop["homepage"],
                                  shop["categorie"],
                                  shop["amenity"])
+
+        self.__execute_sql(sql)
+
+    def insert_one_poi(self, poi):
+        sql = INSERT_ONE_POI % (poi["lon"],
+                                poi["lat"],
+                                poi["name"],
+                                poi["amenity"])
 
         self.__execute_sql(sql)
 
@@ -185,7 +192,6 @@ class DBC(object):
         sorted_categories = collections.OrderedDict(sorted(categories.items()))
 
         return sorted_categories
-
 
     def delete_one_fav(self, f_id: int):
         sql = DELETE_FAV_BY_ID % f_id

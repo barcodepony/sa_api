@@ -13,6 +13,7 @@ def read_all():
         dbc.close_connection()
     return jsonify(shops)
 
+
 def read_one(s_id: int):
     dbc = DBC()
     shop = {}
@@ -25,6 +26,7 @@ def read_one(s_id: int):
         dbc.close_connection()
     return jsonify(shop)
 
+
 def delete_one(s_id):
     dbc = DBC()
     try:
@@ -36,7 +38,6 @@ def delete_one(s_id):
         dbc.close_connection()
 
 
-# TODO chgange to shops
 def update_one(s_id, shop):
     keys = ["s_lon", "s_lat", "s_name", "s_homepage", "s_category", "s_amenity"]
     for key in shop:
@@ -63,8 +64,9 @@ def update_one(s_id, shop):
     finally:
         dbc.close_connection()
 
+
 def create_one(shop):
-    keys = ["f_category", "f_name", "f_poi", "f_label"]
+    keys = ["s_lon", "s_lat", "s_name", "s_homepage", "s_category", "s_amenity"]
     for key in shop:
         if key in keys:
             keys.remove(key)
@@ -88,8 +90,8 @@ def create_one(shop):
     finally:
         dbc.close_connection()
 
-def get_categories():
 
+def get_categories():
     dbc = DBC()
     category_dict = {}
     try:
@@ -99,5 +101,4 @@ def get_categories():
         print("ERROR: %s" % e)
     finally:
         dbc.close_connection()
-
     return jsonify(category_dict)
