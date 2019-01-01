@@ -3,8 +3,10 @@ from mysql.connector import Error
 from common.SQL_CONSTANTS import *
 from operator import itemgetter
 import collections
+
+
 class DBC(object):
-    def __init__(self, host:str=GBL_HOST, port:int=GBL_PORT, db:str=GBL_DB, user:str=GBL_USER, password:str=GBL_PASSWORD):
+    def __init__(self, host:str = GBL_HOST, port: int = GBL_PORT, db: str = GBL_DB, user: str = GBL_USER, password: str = GBL_PASSWORD):
         self.host = host
         self.port = port
         self.db = db
@@ -59,6 +61,59 @@ class DBC(object):
 
     def get_all_shops(self):
         records = self.__query_sql(SELECT_ALL_SHOPS)
+
+        shops = []
+        for shop in records:
+            s = {}
+            s["s_id"] = shop[0]
+            s["s_lon"] = shop[1]
+            s["s_lat"] = shop[2]
+            s["s_name"] = shop[3]
+            s["s_homepage"] = shop[4]
+            s["s_category"] = shop[5]
+            s["s_amenity"] = shop[6]
+            shops.append(s)
+
+        shops.sort(key=itemgetter("s_id"))
+        return shops
+
+    def get_filtered_shops(self, filters: dict, values: dict):
+
+        condition_exists = False
+        condition = ""
+
+        if filters["category"]:
+            if condition_exists:
+                condition += " AND "
+            condition_exists = True
+            condition += "categorie='"+values["category"]+"'"
+
+        if filters["poi"]:
+            assert isinstance(values["poi"], int), "PoI needs to type of integer"
+            assert isinstance(values["range"], int), "Range needs to be set, if a PoI is used"
+
+            poi = self.get_one_poi(filters["poi"])
+            lat = poi["p_lat"]
+            lon = poi["p_lon"]
+
+
+
+            if condition_exists:
+                condition += " AND "
+            condition_exists = True
+            condition += "st_distance_sphere(POINT(lon, lat), Point(%s, %s))) < %s" % (lon, lat, values["range"])
+
+        if filters["name"]:
+            if condition_exists:
+                condition += " AND "
+            condition_exists = True
+            condition += "name LIKE '%"+values["name"]+"%'"
+
+        if condition == "":
+            raise ValueError("The Condition is empty, after filter mogrify")
+
+
+        records = self.__query_sql(SELECT_FILTERED_SHOPS % condition)
 
         shops = []
         for shop in records:
@@ -237,6 +292,10 @@ class DBC(object):
         p["p_amenity"] = record[4]
         return p
 
+    def __get_filter_count(self, filters:dict):
+        count = 0
+        for key in filters:
+            count = count+1 if filters[key] is True else count
 
 
 

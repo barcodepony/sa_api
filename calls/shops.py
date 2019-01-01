@@ -1,12 +1,35 @@
 from common.DBConnector import DBC
 from flask import jsonify
 
-def read_all():
+def read_all(range, name=None, category=None, poi=None):
+    # get all parameters and enable_states
+    filter = {
+        "name": False if name is None else True,
+        "category": False if category is None else True,
+        "poi": False if poi is None else True
+    }
+
+    fvalue = {
+        "name": name,
+        "category": category,
+        "poi": poi,
+        "range": range
+    }
+
+    filtered = False
+    for key in filter:
+        if filter[key]:
+            filtered = True
+            break
     dbc = DBC()
     dbc.connect()
     shops = []
+
     try:
-        shops = dbc.get_all_shops()
+        if filtered:
+            shops = dbc.get_filtered_shops(filters=filter, values=fvalue)
+        else:
+            shops = dbc.get_all_shops()
     except Exception as e:
         print("ERROR: %s" % e)
     finally:

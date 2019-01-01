@@ -123,8 +123,6 @@ paths:
           schema:
             type: object
             properties:
-              #f_id:
-              #  type: integer
               f_category:
                 type: string
               f_name:
@@ -271,8 +269,34 @@ paths:
       operationId: calls.shops.read_all
       tags:
         - Shops
+        - Filter
       summary: The Shops data structure supported by the server application
       description: Read the list of Shops
+      parameters:
+        - name: name
+          in: query
+          type: string
+          description: SearchString for a given Name
+          #required: false
+          #x-nullable: true
+          #default: None
+        - name: category
+          in: query
+          type: string
+          description: SearchString for a given Category
+          #required: false
+          #x-nullable: true
+        - name: poi
+          in: query
+          type: integer
+          description: SearchString for a given Point of Interest. May be edited
+          #required: false
+          #x-nullable: true
+        - name: range
+          in: query
+          type: integer
+          x-nullable: true
+          default: 100
       responses:
         200:
           description: Successful list shops operations
