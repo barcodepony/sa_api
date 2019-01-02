@@ -1,9 +1,11 @@
 from common.DBConnector import DBC
 from flask import jsonify
 
+global dbc
+dbc = DBC()
+dbc.connect()
 
 def read_all():
-    dbc = DBC()
     favs = []
     try:
         dbc.connect()
@@ -16,7 +18,6 @@ def read_all():
 
 
 def read_one(f_id):
-    dbc = DBC()
     fav = {}
     try:
         dbc.connect()
@@ -29,7 +30,6 @@ def read_one(f_id):
 
 
 def delete_one(f_id):
-    dbc = DBC()
     try:
         dbc.connect()
         dbc.delete_one_fav(f_id)
@@ -48,7 +48,6 @@ def update_one(f_id, favourite):
         print("ERROR: Not all keys within the request body (%s) .. aborting" % keys)
         return
 
-    dbc = DBC()
     fav = {}
     fav["id"] = f_id
     fav["category"] = favourite["f_category"]
@@ -75,7 +74,6 @@ def create_one(favourite):
         print("ERROR: Not all keys within the request body (%s) .. aborting" % keys)
         return
 
-    dbc = DBC()
     fav = {}
     fav["category"] = favourite["f_category"]
     fav["name"] = favourite["f_name"]

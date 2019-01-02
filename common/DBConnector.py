@@ -3,7 +3,6 @@ from mysql.connector import Error
 from common.SQL_CONSTANTS import *
 from operator import itemgetter
 import collections
-from flask import jsonify
 
 class DBC(object):
     def __init__(self, host:str = GBL_HOST, port: int = GBL_PORT, db: str = GBL_DB, user: str = GBL_USER, password: str = GBL_PASSWORD):
@@ -16,18 +15,24 @@ class DBC(object):
 
     def connect(self):
         try:
+            if isinstance(self.connection, mysql.connector.CMySQLConnection):
+                if self.connection.is_connected():
+                    print("reusing connection to SA")
+                    return
+
+            print("Building connection to SA")
             self.connection = mysql.connector.connect(host=self.host,
                                                       database=self.db,
                                                       port=self.port,
                                                       user=self.__user,
                                                       password=self.__password)
             if self.connection.is_connected():
-                db_Info = self.connection.get_server_info()
-                print("Connected to MySQL database... MySQL Server version on ",db_Info)
-                cursor = self.connection.cursor()
-                cursor.execute("select database();")
-                record = cursor.fetchone()
-                print ("You are connected to - ", record)
+                #db_Info = self.connection.get_server_info()
+                #print("Connected to MySQL database... MySQL Server version on ", db_Info)
+                #cursor = self.connection.cursor()
+                #cursor.execute("select database();")
+                #record = cursor.fetchone()
+                print("You are connected to SA")
 
         except Error as e:
             print("Error while connection to DB: ", e)
@@ -211,8 +216,8 @@ class DBC(object):
 
     def insert_one_fav(self, fav):
         sql = INSERT_ONE_FAV % (fav["category"],
-                                fav["poi"],
                                 fav["name"],
+                                fav["poi"],
                                 fav["label"],
                                 fav["range"])
 

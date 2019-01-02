@@ -1,6 +1,10 @@
 from common.DBConnector import DBC
 from flask import jsonify
 
+global dbc
+dbc = DBC()
+dbc.connect()
+
 def read_all(range, name=None, category=None, poi=None):
     # get all parameters and enable_states
     filter = {

@@ -1,8 +1,10 @@
 from common.DBConnector import DBC
 from flask import jsonify
+global dbc
+dbc = DBC()
+dbc.connect()
 
 def read_all():
-    dbc = DBC()
     try:
         dbc.connect()
         pois = dbc.get_all_pois()
@@ -13,7 +15,6 @@ def read_all():
     return jsonify(pois)
 
 def read_all_dict():
-    dbc = DBC()
     try:
         dbc.connect()
         pois_dict = dbc.get_all_pois_as_dict()
@@ -26,7 +27,6 @@ def read_all_dict():
 
 
 def read_one(p_id: int):
-    dbc = DBC()
     poi = {}
     try:
         dbc.connect()
@@ -38,7 +38,6 @@ def read_one(p_id: int):
     return jsonify(poi)
 
 def delete_one(p_id):
-    dbc = DBC()
     try:
         dbc.connect()
         dbc.delete_one_poi(p_id)
@@ -57,7 +56,6 @@ def update_one(p_id, poi):
         print("ERROR: Not all keys within the request body (%s) .. aborting" % keys)
         return
 
-    dbc = DBC()
     p = {}
     p["id"] = p_id
     p["lon"] = poi["p_lon"]
@@ -82,7 +80,6 @@ def create_one(poi):
         print("ERROR: Not all keys within the request body (%s) .. aborting" % keys)
         return
 
-    dbc = DBC()
     p = {}
     p["lon"] = poi["p_lon"]
     p["lat"] = poi["p_lat"]

@@ -10,7 +10,7 @@ SELECT_ALL_FAVS = "SELECT * FROM fav;"
 SELECT_ONE_FAV = "SELECT * FROM fav where id = %s;"
 UPDATE_FAV_BY_ID = "UPDATE fav SET category='%s', name='%s', poi='%s', label='%s', `range`=%s where id = %s;"
 DELETE_FAV_BY_ID = "DELETE FROM fav WHERE id = %s;"
-INSERT_ONE_FAV = "INSERT INTO fav (category, name, poi, label, range) VALUES ('%s', '%s', '%s', '%s', '%s');"
+INSERT_ONE_FAV = "INSERT INTO fav (category, name, poi, label, `range`) VALUES ('%s', '%s', '%s', '%s', %s);"
 
 
 
