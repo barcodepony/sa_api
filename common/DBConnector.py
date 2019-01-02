@@ -3,7 +3,7 @@ from mysql.connector import Error
 from common.SQL_CONSTANTS import *
 from operator import itemgetter
 import collections
-
+from flask import jsonify
 
 class DBC(object):
     def __init__(self, host:str = GBL_HOST, port: int = GBL_PORT, db: str = GBL_DB, user: str = GBL_USER, password: str = GBL_PASSWORD):
@@ -92,7 +92,8 @@ class DBC(object):
             assert isinstance(values["poi"], int), "PoI needs to type of integer"
             assert isinstance(values["range"], int), "Range needs to be set, if a PoI is used"
 
-            poi = self.get_one_poi(filters["poi"])
+            poi = self.get_one_poi(values["poi"])
+            assert len(poi) > 0, "Invalid PoI return .. is there no ID %s?" % filters["poi"]
             lat = poi["p_lat"]
             lon = poi["p_lon"]
 
@@ -101,7 +102,7 @@ class DBC(object):
             if condition_exists:
                 condition += " AND "
             condition_exists = True
-            condition += "st_distance_sphere(POINT(lon, lat), Point(%s, %s))) < %s" % (lon, lat, values["range"])
+            condition += "st_distance_sphere(POINT(lon, lat), Point(%s, %s)) < %s" % (lon, lat, values["range"])
 
         if filters["name"]:
             if condition_exists:
@@ -277,6 +278,14 @@ class DBC(object):
         pois.sort(key=itemgetter("p_id"))
         return pois
 
+    def get_all_pois_as_dict(self):
+        pois = self.get_all_pois()
+        poi_dict = dict()
+        for poi in pois:
+            poi_dict[str(poi["p_id"])] = poi["p_name"]
+
+        return poi_dict
+
     def get_one_poi(self, p_id: int):
         record = self.__query_sql(SELECT_ONE_POI % p_id)
         if len(record) == 0:
@@ -298,10 +307,26 @@ class DBC(object):
             count = count+1 if filters[key] is True else count
 
 
-
 if __name__ == "__main__":
     dbc = DBC()
     dbc.connect()
-    dbc.get_all_categories()
+    a = dbc.get_one_poi(-1)
+
+    filter = {
+        "name": True,
+        "category": True,
+        "poi": True
+    }
+
+    fvalue = {
+        "name": "auer",
+        "category": "bakery",
+        "poi": 251710890,
+        "range": 1000
+    }
+
+    b = dbc.get_filtered_shops(filters=filter, values=fvalue)
+    c = dbc.get_all_pois_as_dict()
+
     # rec = dbc.execute("select * from fav;")
     dbc.close_connection()

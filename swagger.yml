@@ -160,6 +160,21 @@ paths:
                   type: string
                 p_amenity:
                   type: string
+  /pois/dict:
+    get:
+      operationId: calls.pois.read_all_dict
+      tags:
+        - Category
+      summary: Lists all POI Names by ID supported by the server application
+      description: Lists all POIs supported by the server application
+      responses:
+        200:
+          description: Lists all POIS supported by the server application
+          schema:
+            type: object
+            additionalProperties:
+              type: integer
+
 
     post:
       operationId: calls.pois.create_one
@@ -332,8 +347,6 @@ paths:
           schema:
             type: object
             properties:
-              s_id:
-                type: integer
               s_lon:
                 type: number
               s_lat:
@@ -363,8 +376,6 @@ paths:
             type: object
             additionalProperties:
               type: integer
-
-
 
   /shops/{s_id}:
     get:

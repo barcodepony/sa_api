@@ -90,6 +90,7 @@ def update_one(s_id, shop):
 
 def create_one(shop):
     keys = ["s_lon", "s_lat", "s_name", "s_homepage", "s_category", "s_amenity"]
+    print(shop)
     for key in shop:
         if key in keys:
             keys.remove(key)

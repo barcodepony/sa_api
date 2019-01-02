@@ -5,12 +5,24 @@ def read_all():
     dbc = DBC()
     try:
         dbc.connect()
-        favs = dbc.get_all_pois()
+        pois = dbc.get_all_pois()
     except Exception as e:
         print("ERROR: %s" % e)
     finally:
         dbc.close_connection()
-    return jsonify(favs)
+    return jsonify(pois)
+
+def read_all_dict():
+    dbc = DBC()
+    try:
+        dbc.connect()
+        pois_dict = dbc.get_all_pois_as_dict()
+        return pois_dict
+    except Exception as e:
+        print("ERROR: %s" % e)
+    finally:
+        dbc.close_connection()
+
 
 
 def read_one(p_id: int):

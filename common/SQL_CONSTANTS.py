@@ -14,15 +14,16 @@ INSERT_ONE_FAV = "INSERT INTO fav (category, name, poi, label) VALUES ('%s', '%s
 
 
 
+
 SELECT_ALL_SHOPS = "SELECT * FROM shops;"
 SELECT_ONE_SHOP = "SELECT * FROM shops where id = %s"
 UPDATE_SHOP_BY_ID = "UPDATE shops SET lon='%s', lat='%s', name='%s', homepage='%s', categorie='%s', amenity='%s' where id=%s;"
 DELETE_SHOP_BY_ID = "DELETE FROM shops WHERE id = %s;"
-INSERT_ONE_SHOP = "INSERT INTO shops (lon, lat, name, homepage, categorie, amenity) VALUES (%s,%s,'%s','%s','%s','%s',);"
+INSERT_ONE_SHOP = "INSERT INTO shops (lon, lat, name, homepage, categorie, amenity) VALUES (%s,%s,'%s','%s','%s','%s');"
 SELECT_ALL_CATEGORIES = "select categorie from shops group by categorie;"
 SELECT_FILTERED_SHOPS = "SELECT * FROM shops WHERE %s;"
 
-SELECT_ALL_POIS = "SELECT * FROM poi;"
+SELECT_ALL_POIS = "SELECT * FROM poi where name <> '';"
 SELECT_ONE_POI = "SELECT * FROM poi where id = %s;"
 UPDATE_POI_BY_ID = "UPDATE poi SET lon='%s', lat='%s', name='%s', amenity='%s' where id=%s;"
 DELETE_POI_BY_ID = "DELETE FROM poi WHERE id = %s;"
