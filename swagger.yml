@@ -35,6 +35,8 @@ paths:
                 type: string
               f_label:
                 type: string
+              f_range:
+                type: integer
     post:
       operationId: calls.favs.create_one
       tags:
@@ -56,6 +58,8 @@ paths:
                 type: string
               f_label:
                 type: string
+              f_range:
+                type: integer
       responses:
         200:
           description: Successful added Favourite-Creation to Queue

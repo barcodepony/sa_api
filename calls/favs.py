@@ -40,7 +40,7 @@ def delete_one(f_id):
 
 
 def update_one(f_id, favourite):
-    keys = ["f_category", "f_name", "f_poi", "f_label"]
+    keys = ["f_category", "f_name", "f_poi", "f_label", "f_range"]
     for key in favourite:
         if key in keys:
             keys.remove(key)
@@ -55,6 +55,8 @@ def update_one(f_id, favourite):
     fav["name"] = favourite["f_name"]
     fav["poi"] = favourite["f_poi"]
     fav["label"] = favourite["f_label"]
+    fav["range"] = favourite["f_range"]
+    print(fav)
     try:
         dbc.connect()
         dbc.update_one_fav(fav)
@@ -65,7 +67,7 @@ def update_one(f_id, favourite):
 
 
 def create_one(favourite):
-    keys = ["f_category", "f_name", "f_poi", "f_label"]
+    keys = ["f_category", "f_name", "f_poi", "f_label", "f_range"]
     for key in favourite:
         if key in keys:
             keys.remove(key)
@@ -79,6 +81,7 @@ def create_one(favourite):
     fav["name"] = favourite["f_name"]
     fav["poi"] = favourite["f_poi"]
     fav["label"] = favourite["f_label"]
+    fav["range"] = favourite["f_range"]
     try:
         dbc.connect()
         dbc.insert_one_fav(fav)

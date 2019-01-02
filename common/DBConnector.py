@@ -159,6 +159,7 @@ class DBC(object):
             f["f_name"] = fav[2]
             f["f_poi"] = fav[3]
             f["f_label"] = fav[4]
+            f["f_range"] = fav[5]
             favs.append(f)
 
         favs.sort(key=itemgetter("f_id"))
@@ -185,6 +186,7 @@ class DBC(object):
                                   favourite["name"],
                                   favourite["poi"],
                                   favourite["label"],
+                                  favourite["range"],
                                   favourite["id"])
         self.__execute_sql(sql)
 
@@ -211,7 +213,8 @@ class DBC(object):
         sql = INSERT_ONE_FAV % (fav["category"],
                                 fav["poi"],
                                 fav["name"],
-                                fav["label"])
+                                fav["label"],
+                                fav["range"])
 
         self.__execute_sql(sql)
 
