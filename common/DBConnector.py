@@ -3,6 +3,7 @@ from mysql.connector import Error
 from common.SQL_CONSTANTS import *
 from operator import itemgetter
 import collections
+from common.QueueClient import QueueClient
 
 class DBC(object):
     def __init__(self, host:str = GBL_HOST, port: int = GBL_PORT, db: str = GBL_DB, user: str = GBL_USER, password: str = GBL_PASSWORD):
@@ -27,11 +28,6 @@ class DBC(object):
                                                       user=self.__user,
                                                       password=self.__password)
             if self.connection.is_connected():
-                #db_Info = self.connection.get_server_info()
-                #print("Connected to MySQL database... MySQL Server version on ", db_Info)
-                #cursor = self.connection.cursor()
-                #cursor.execute("select database();")
-                #record = cursor.fetchone()
                 print("You are connected to SA")
 
         except Error as e:
@@ -53,16 +49,19 @@ class DBC(object):
         cursor.execute(sql)
         rec = cursor.fetchall()
         return rec
-
-    def __execute_sql(self, sql):
-        if self.connection is None:
-            raise ConnectionError("Connection is not set.")
-        if not self.connection.is_connected():
-            raise ConnectionError("You are not connected to the DB!")
-        cursor = self.connection.cursor()
-        print("EXECUTING: %s" % sql)
-        cursor.execute(sql)
-        self.connection.commit()
+    def __execute_sql(self, sql, send_to_queue: bool=True):
+        if send_to_queue:
+            client = QueueClient()
+            client.send(sql)
+        elif not send_to_queue:
+            if self.connection is None:
+                raise ConnectionError("Connection is not set.")
+            if not self.connection.is_connected():
+                raise ConnectionError("You are not connected to the DB!")
+            cursor = self.connection.cursor()
+            print("EXECUTING: %s" % sql)
+            cursor.execute(sql)
+            self.connection.commit()
 
     def get_all_shops(self):
         records = self.__query_sql(SELECT_ALL_SHOPS)
